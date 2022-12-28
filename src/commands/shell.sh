@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-start_shell $1
+start_shell $2
