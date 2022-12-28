@@ -1,0 +1,15 @@
+/conf/nginx/certificates/*
+!/conf/nginx/certificates/.gitkeep
+
+/conf/nginx/conf.d/*
+!/conf/nginx/conf.d/.gitkeep
+
+/conf/nginx/dhparam/*
+!/conf/nginx/dhparam/.gitkeep
+
+/conf/nginx/ssl/certs/*
+!/conf/nginx/ssl/certs/.gitkeep
+
+/conf/nginx/ssl/private/*
+!/conf/nginx/ssl/private/.gitkeep
+

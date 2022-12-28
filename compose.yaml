@@ -1,0 +1,97 @@
+version: "3.7"
+
+services:
+
+  #Nginx server
+  websrv:
+    build:
+      context: ./conf/nginx
+      args:
+        user: totoro
+        uid: 1000
+    container_name: myWeb
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "~/projects:/home/totoro/projects"
+
+  # PHP server
+  phpsrv:
+    build:
+      context: ./conf/php
+      args:
+        user: totoro
+        uid: 1000
+    container_name: myPhp
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - "~/projects:/home/totoro/projects"
+
+  # Go server
+  gosrv:
+    build:
+      context: ./conf/golang
+      args:
+        user: totoro
+        uid: 1000
+    container_name: myGolang
+    restart: unless-stopped
+    tty: true
+    security_opt:
+      - "seccomp:unconfined"
+    ports:
+      - "40000:40000"
+    volumes:
+      - "~/projects:/home/totoro/projects"
+
+  #PostgreSql server
+  dbsrv:
+    image: postgres:13.1
+    container_name: myDb
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    tty: true
+    volumes:
+      - "pgvol:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_PASSWORD: 'Dr.Manhattan'
+
+  # NodeJs server
+  nodesrv:
+    build:
+      context: ./conf/node
+      args:
+        user: node
+    container_name: myNode
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    tty: true
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - "~/projects:/home/node/app"
+
+  #Redis server
+  redissrv:
+    image: redis:6.0
+    container_name: myRedis
+    restart: unless-stopped
+
+  #Rust server
+  rustsrv:
+    image: rust:1.53
+    container_name: myRust
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - "~/projects:/usr/src"
+
+
+volumes:
+  pgvol:
