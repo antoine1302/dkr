@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # Arguments defined in docker-compose.yml
 ARG user
@@ -13,9 +13,12 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libicu-dev
 
-# Install Redis
-RUN pecl install redis && \
-docker-php-ext-enable redis
+# Install Redis & Xdebug
+RUN pecl install redis \
+&& pecl install xdebug-3.2.0 \
+&& docker-php-ext-enable redis xdebug \
+&& echo "xdebug.mode=develop,debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+&& echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_pgsql intl
