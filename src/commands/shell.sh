@@ -1,3 +1,11 @@
 #!/usr/bin/env bash
 
-start_shell $2
+declare -A containerList
+containerList=( [go]=myGolang [php]=myPhp [web]=myWeb )
+
+for key in ${!containerList[@]}; do
+	if [[ "$2" == ${key} ]]; then
+		start_shell ${containerList[${key}]}
+		break
+	fi
+done
