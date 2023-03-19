@@ -94,6 +94,13 @@ services:
   #   volumes:
   #     - "~/projects:/usr/src"
 
+  websocketsrv:
+    image: jmalloc/echo-server
+    container_name: myWs
+    restart: unless-stopped
+    ports:
+      - "10000:8080"
+
 
 volumes:
   pgvol:
