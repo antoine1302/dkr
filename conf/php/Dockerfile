@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libpq-dev \
-    libicu-dev
+    libicu-dev \
+    libssl-dev
 
 
 # Install & enable Opcache first (to have Opcache & Xdebug work at the same time, jit compiler will not work though)
