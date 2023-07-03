@@ -8,12 +8,12 @@ ARG uid
 RUN apt-get update && apt-get install -y \
     git \
     curl \
+    wget \
+    vim \
     zip \
     unzip \
     libpq-dev \
-    libicu-dev \
-    libssl-dev
-
+    libicu-dev
 
 # Install & enable Opcache first (to have Opcache & Xdebug work at the same time, jit compiler will not work though)
 RUN docker-php-ext-install opcache \
@@ -27,7 +27,7 @@ opcache.revalidate_freq=5 \n\
 opcache.fast_shutdown=1 \n\
 opcache.validate_timestamps=1 \n\
 opcache.jit=tracing \n\
-opcache.jit_buffer_size=256M" >> $PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini
+opcache.jit_buffer_size=0" >> $PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini
 
 # Install Redis & Xdebug
 RUN pecl install redis \
@@ -36,11 +36,14 @@ RUN pecl install redis \
 && echo "xdebug.mode=develop,debug" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini \
 && echo "xdebug.client_host=host.docker.internal" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 
-# Enable Process Control support pcntl
-RUN docker-php-ext-configure pcntl --enable-pcntl
-
 # Install PHP extensions
-RUN docker-php-ext-install pdo_pgsql intl pcntl
+RUN docker-php-ext-install pdo_mysql intl pcntl sysvmsg sysvsem sysvshm
+
+# Enable Process Control support pcntl
+RUN docker-php-ext-configure pcntl --enable-pcntl \
+&& docker-php-ext-configure sysvmsg --enable-sysvmsg \
+&& docker-php-ext-configure sysvsem --enable-sysvsem \
+&& docker-php-ext-configure sysvshm --enable-sysvshm
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*

@@ -50,20 +50,20 @@ services:
     volumes:
       - "~/projects:/home/totoro/projects"
 
-  #PostgreSql server
-  dbsrv:
-    image: postgres:13.1
-    container_name: myDb
+  # MariaDb server
+  mariadbsrv:
+    image: mariadb:10.11
+    container_name: myMariaDb
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      - "3306:3306"
     tty: true
     volumes:
-      - "pgvol:/var/lib/postgresql/data"
+      - "mariadbvol:/var/lib/mysql"
     environment:
-      POSTGRES_PASSWORD: 'Dr.Manhattan'
+      MARIADB_ROOT_PASSWORD: g0dmode
 
-  # # NodeJs server
+  # NodeJs server
   # nodesrv:
   #   build:
   #     context: ./conf/node
@@ -72,12 +72,18 @@ services:
   #   container_name: myNode
   #   restart: unless-stopped
   #   ports:
-  #     - "3000:3000"
+  #     - "8080:8080"
   #   tty: true
   #   cap_add:
   #     - SYS_ADMIN
   #   volumes:
   #     - "~/projects:/home/node/app"
+
+  # Websocket Test server
+  wstestsrv:
+    image: jmalloc/echo-server
+    container_name: myWsTest
+    restart: unless-stopped
 
   #Redis server
   redissrv:
@@ -85,22 +91,5 @@ services:
     container_name: myRedis
     restart: unless-stopped
 
-  # #Rust server
-  # rustsrv:
-  #   image: rust:1.53
-  #   container_name: myRust
-  #   restart: unless-stopped
-  #   tty: true
-  #   volumes:
-  #     - "~/projects:/usr/src"
-
-  websocketsrv:
-    image: jmalloc/echo-server
-    container_name: myWs
-    restart: unless-stopped
-    ports:
-      - "10000:8080"
-
-
 volumes:
-  pgvol:
+  mariadbvol:
