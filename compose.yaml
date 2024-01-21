@@ -51,17 +51,31 @@ services:
       - "~/projects:/home/totoro/projects"
 
   # MariaDb server
-  mariadbsrv:
-    image: mariadb:10.11
-    container_name: myMariaDb
+  # mariadbsrv:
+  #   image: mariadb:10.11
+  #   container_name: myMariaDb
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3306:3306"
+  #   tty: true
+  #   volumes:
+  #     - "mariadbvol:/var/lib/mysql"
+  #   environment:
+  #     MARIADB_ROOT_PASSWORD: g0dmode
+
+  # PostgresSQL server
+  postgressrv:
+    build:
+      context: ./conf/postgres
+    container_name: MyPostgres
     restart: unless-stopped
-    ports:
-      - "3306:3306"
     tty: true
     volumes:
-      - "mariadbvol:/var/lib/mysql"
+      - "pgsqlvol:/var/lib/postgresql/data/pgdata"
     environment:
-      MARIADB_ROOT_PASSWORD: g0dmode
+      POSTGRES_PASSWORD: g0dmode
+      PGDATA: /var/lib/postgresql/data
+
 
   # NodeJs server
   # nodesrv:
@@ -92,4 +106,5 @@ services:
     restart: unless-stopped
 
 volumes:
-  mariadbvol:
+  pgsqlvol:
+

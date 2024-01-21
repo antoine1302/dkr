@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 declare -A containerList
-containerList=( [go]=myGolang [php]=myPhp [web]=myWeb [node]=myNode [mariadb]=myMariaDb)
+containerList=( [go]=myGolang [php]=myPhp [web]=myWeb [postgres]=MyPostgres)
 
 for key in ${!containerList[@]}; do
 	if [[ "$2" == ${key} ]]; then
