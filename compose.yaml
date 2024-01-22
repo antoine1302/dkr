@@ -67,7 +67,7 @@ services:
   postgressrv:
     build:
       context: ./conf/postgres
-    container_name: MyPostgres
+    container_name: myPostgres
     restart: unless-stopped
     ports:
       - "5432:5432"
