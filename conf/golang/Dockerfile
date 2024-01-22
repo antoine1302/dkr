@@ -1,7 +1,7 @@
-FROM golang:1.19.4
+FROM golang:1.21.5
 
 # Build Delve
-RUN go install github.com/go-delve/delve/cmd/dlv@latest
+# RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
 EXPOSE 40000	
 

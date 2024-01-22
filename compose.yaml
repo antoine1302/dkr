@@ -51,39 +51,32 @@ services:
       - "~/projects:/home/totoro/projects"
 
   # MariaDb server
-  mariadbsrv:
-    image: mariadb:10.11
-    container_name: myMariaDb
-    restart: unless-stopped
-    ports:
-      - "3306:3306"
-    tty: true
-    volumes:
-      - "mariadbvol:/var/lib/mysql"
-    environment:
-      MARIADB_ROOT_PASSWORD: g0dmode
-
-  # NodeJs server
-  # nodesrv:
-  #   build:
-  #     context: ./conf/node
-  #     args:
-  #       user: node
-  #   container_name: myNode
+  # mariadbsrv:
+  #   image: mariadb:10.11
+  #   container_name: myMariaDb
   #   restart: unless-stopped
   #   ports:
-  #     - "8080:8080"
+  #     - "3306:3306"
   #   tty: true
-  #   cap_add:
-  #     - SYS_ADMIN
   #   volumes:
-  #     - "~/projects:/home/node/app"
+  #     - "mariadbvol:/var/lib/mysql"
+  #   environment:
+  #     MARIADB_ROOT_PASSWORD: g0dmode
 
-  # Websocket Test server
-  wstestsrv:
-    image: jmalloc/echo-server
-    container_name: myWsTest
+  # PostgresSQL server
+  postgressrv:
+    build:
+      context: ./conf/postgres
+    container_name: myPostgres
     restart: unless-stopped
+    ports:
+      - "5432:5432"
+    tty: true
+    volumes:
+      - "pgsqlvol:/var/lib/postgresql/data/pgdata"
+    environment:
+      POSTGRES_PASSWORD: g0dmode
+      PGDATA: /var/lib/postgresql/data
 
   #Redis server
   redissrv:
@@ -92,4 +85,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  mariadbvol:
+  pgsqlvol:
