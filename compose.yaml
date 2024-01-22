@@ -69,35 +69,14 @@ services:
       context: ./conf/postgres
     container_name: MyPostgres
     restart: unless-stopped
+    ports:
+      - "5432:5432"
     tty: true
     volumes:
       - "pgsqlvol:/var/lib/postgresql/data/pgdata"
     environment:
       POSTGRES_PASSWORD: g0dmode
       PGDATA: /var/lib/postgresql/data
-
-
-  # NodeJs server
-  # nodesrv:
-  #   build:
-  #     context: ./conf/node
-  #     args:
-  #       user: node
-  #   container_name: myNode
-  #   restart: unless-stopped
-  #   ports:
-  #     - "8080:8080"
-  #   tty: true
-  #   cap_add:
-  #     - SYS_ADMIN
-  #   volumes:
-  #     - "~/projects:/home/node/app"
-
-  # Websocket Test server
-  wstestsrv:
-    image: jmalloc/echo-server
-    container_name: myWsTest
-    restart: unless-stopped
 
   #Redis server
   redissrv:
@@ -107,4 +86,3 @@ services:
 
 volumes:
   pgsqlvol:
-
