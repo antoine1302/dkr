@@ -46,7 +46,7 @@ services:
     security_opt:
       - "seccomp:unconfined"
     ports:
-      - "40000:40000"
+      - "8082:8080"
     volumes:
       - "~/projects:/home/totoro/projects"
 
@@ -77,6 +77,17 @@ services:
     environment:
       POSTGRES_PASSWORD: g0dmode
       PGDATA: /var/lib/postgresql/data
+
+  # PgAdmin4
+  pgadminsrv:
+    image: dpage/pgadmin4:8.2
+    container_name: myPgadmin
+    restart: unless-stopped
+    ports:
+      - "8181:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: totoro1302@island.fr
+      PGADMIN_DEFAULT_PASSWORD: topsecret
 
   #Redis server
   redissrv:
