@@ -1,9 +1,7 @@
-FROM golang:1.21.5
+FROM golang:1.22
 
 # Build Delve
 # RUN go install github.com/go-delve/delve/cmd/dlv@latest
-
-EXPOSE 40000	
 
 # Arguments defined in docker-compose.yml
 ARG user
