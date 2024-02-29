@@ -83,8 +83,7 @@ services:
 
   #Loki
   lokisrv:
-    build:
-      context: ./conf/loki
+    image: grafana/loki:2.9.4
     container_name: myLoki
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
