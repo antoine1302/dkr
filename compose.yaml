@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 
 services:
 
@@ -43,25 +43,10 @@ services:
     container_name: myGolang
     restart: unless-stopped
     tty: true
-    security_opt:
-      - "seccomp:unconfined"
     ports:
-      - "8082:8080"
+      - "8282:8080"
     volumes:
       - "~/projects:/home/totoro/projects"
-
-  # MariaDb server
-  # mariadbsrv:
-  #   image: mariadb:10.11
-  #   container_name: myMariaDb
-  #   restart: unless-stopped
-  #   ports:
-  #     - "3306:3306"
-  #   tty: true
-  #   volumes:
-  #     - "mariadbvol:/var/lib/mysql"
-  #   environment:
-  #     MARIADB_ROOT_PASSWORD: g0dmode
 
   # PostgresSQL server
   postgressrv:
@@ -80,20 +65,40 @@ services:
 
   # PgAdmin4
   pgadminsrv:
-    image: dpage/pgadmin4:8.2
+    image: dpage/pgadmin4:8.3
     container_name: myPgadmin
     restart: unless-stopped
     ports:
       - "8181:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: totoro1302@island.fr
+      PGADMIN_DEFAULT_EMAIL: totoro1302@pgadmin.test
       PGADMIN_DEFAULT_PASSWORD: topsecret
 
-  #Redis server
-  redissrv:
-    image: redis:6.0
-    container_name: myRedis
+  #Grafana
+  grafanasrv:
+    image: grafana/grafana:10.3.3
+    container_name: myGrafana
+    ports:
+      - "3000:3000"
+
+  #Loki
+  lokisrv:
+    image: grafana/loki:2.9.4
+    container_name: myLoki
+    command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
+
+  #Promtail
+  promtail:
+    image: grafana/promtail:latest
+    container_name: myPromtail
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/promtail/conf.yaml:/etc/promtail/promtail-config.yaml
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    depends_on:
+      - lokisrv
 
 volumes:
   pgsqlvol:
